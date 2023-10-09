@@ -19,21 +19,35 @@ export default function Home() {
     getTokenList().then((tokens) => {
       setTokenList(tokens);
       setSelectedToken(tokens[0].symbol);
+
+      if (tokens.length === 0) return;
+
+      const tickerName = `${tokens[0].symbol.toLowerCase()}@ticker`;
+      ws.onopen = () => {
+        ws.send(
+          JSON.stringify({
+            method: "SUBSCRIBE",
+            params: [tickerName],
+            id: 1,
+          })
+        );
+      };
     });
   }, []);
 
   React.useEffect(() => {
     if (!selectedToken) return;
 
-    ws.onopen = () => {
+    const tickerName = `${selectedToken.toLowerCase()}@ticker`;
+    if (ws.readyState === WebSocket.OPEN) {
       ws.send(
         JSON.stringify({
           method: "SUBSCRIBE",
-          params: [`${selectedToken.toLowerCase()}@ticker`],
+          params: [tickerName],
           id: 1,
         })
       );
-    };
+    }
 
     ws.onmessage = (event: MessageEvent) => {
       const message = JSON.parse(event.data);
@@ -45,7 +59,14 @@ export default function Home() {
     };
 
     return () => {
-      ws.close();
+      setCurrentPrice(0);
+      ws.send(
+        JSON.stringify({
+          method: "UNSUBSCRIBE",
+          params: [tickerName],
+          id: 1,
+        })
+      );
     };
   }, [selectedToken]);
 
@@ -57,10 +78,21 @@ export default function Home() {
             <div className="text-[#C5C5C5] text-sm">Current value</div>
 
             <div className="flex items-center gap-1">
-              <Image src="/rupee-sign.svg" alt="ETH" width={14} height={20} />{" "}
-              <span className="text-xl text-[#627EEA] font-semibold">
-                {usdToInr(currentPrice)}
-              </span>
+              {currentPrice > 0 ? (
+                <>
+                  <Image
+                    src="/rupee-sign.svg"
+                    alt="ETH"
+                    width={14}
+                    height={20}
+                  />{" "}
+                  <span className="text-xl text-[#627EEA] font-semibold">
+                    {usdToInr(currentPrice)}
+                  </span>
+                </>
+              ) : (
+                "Loading..."
+              )}
             </div>
           </div>
 
