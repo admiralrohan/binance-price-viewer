@@ -20,7 +20,9 @@ export default function Home() {
       setTokenList(tokens);
       setSelectedToken(tokens[0].symbol);
     });
+  }, []);
 
+  React.useEffect(() => {
     if (!selectedToken) return;
 
     ws.onopen = () => {
@@ -62,9 +64,13 @@ export default function Home() {
             </div>
           </div>
 
-          <SelectToken tokenList={tokenList} selectedToken={selectedToken}>
+          <SelectToken
+            tokenList={tokenList}
+            selectedToken={selectedToken}
+            setSelectedToken={setSelectedToken}
+          >
             <button className="bg-[#1C1731] w-full h-14 rounded-md flex justify-between items-center px-6 py-4">
-              <span>Ethereum</span>
+              <span>{selectedToken}</span>
               <Image src="/arrow-down.svg" alt="ETH" width={14} height={7} />
             </button>
           </SelectToken>

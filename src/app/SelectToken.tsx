@@ -6,12 +6,14 @@ interface SelectTokenProps {
   children: React.ReactNode;
   tokenList: Array<{ symbol: string; logoUrl: string }>;
   selectedToken: string | null;
+  setSelectedToken: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export default function SelectToken({
   children,
   tokenList,
   selectedToken,
+  setSelectedToken,
 }: SelectTokenProps) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
@@ -50,6 +52,10 @@ export default function SelectToken({
                     "relative h-11 w-full flex justify-start items-center ps-14 " +
                     (selectedToken === token.symbol ? " bg-[#1B192D]" : "")
                   }
+                  onClick={() => {
+                    setSelectedToken(token.symbol);
+                    setIsModalOpen(false);
+                  }}
                 >
                   <span>{token.symbol}</span>
                   {selectedToken === token.symbol && (
