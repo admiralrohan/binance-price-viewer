@@ -5,7 +5,42 @@ import Button from "@/components/Button";
 import Image from "next/image";
 import SelectToken from "@/app/SelectToken";
 
+const ws = new WebSocket("wss://stream.binance.com:9443/ws");
+
+function usdToInr(usdValue: number) {
+  return Number(usdValue * 80).toFixed(2);
+}
+
 export default function Home() {
+  const [currentPrice, setCurrentPrice] = React.useState(0);
+
+  React.useEffect(() => {
+    const symbol = "ETHUSDT";
+
+    ws.onopen = () => {
+      ws.send(
+        JSON.stringify({
+          method: "SUBSCRIBE",
+          params: [`${symbol.toLowerCase()}@ticker`],
+          id: 1,
+        })
+      );
+    };
+
+    ws.onmessage = (event: MessageEvent) => {
+      const message = JSON.parse(event.data);
+
+      if (message.s === symbol) {
+        const tokenValue = message.c;
+        setCurrentPrice(tokenValue);
+      }
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
+
   return (
     <main className="text-white">
       <div className="w-[470px] mx-auto my-24 px-10 py-12 border-current border-2 flex flex-col gap-6">
@@ -16,7 +51,7 @@ export default function Home() {
             <div className="flex items-center gap-1">
               <Image src="/rupee-sign.svg" alt="ETH" width={14} height={20} />{" "}
               <span className="text-xl text-[#627EEA] font-semibold">
-                24882
+                {usdToInr(currentPrice)}
               </span>
             </div>
           </div>
