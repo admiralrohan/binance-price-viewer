@@ -62,7 +62,7 @@ export default function Home() {
             </div>
           </div>
 
-          <SelectToken>
+          <SelectToken tokenList={tokenList} selectedToken={selectedToken}>
             <button className="bg-[#1C1731] w-full h-14 rounded-md flex justify-between items-center px-6 py-4">
               <span>Ethereum</span>
               <Image src="/arrow-down.svg" alt="ETH" width={14} height={7} />

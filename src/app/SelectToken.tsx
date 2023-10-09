@@ -2,19 +2,18 @@ import React from "react";
 import Image from "next/image";
 import Modal from "@/components/Modal";
 
-const tokenList = [
-  "Ethereum",
-  "Bitcoin",
-  "Tether",
-  "BNB",
-  "Cardano",
-  "Solana",
-  "Dogecoin",
-];
+interface SelectTokenProps {
+  children: React.ReactNode;
+  tokenList: Array<{ symbol: string; logoUrl: string }>;
+  selectedToken: string | null;
+}
 
-export default function SelectToken({ children }: any) {
+export default function SelectToken({
+  children,
+  tokenList,
+  selectedToken,
+}: SelectTokenProps) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [selectedToken, setSelectedToken] = React.useState(tokenList[0]);
 
   return (
     <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} trigger={children}>
@@ -43,17 +42,17 @@ export default function SelectToken({ children }: any) {
             />
           </div>
 
-          <ul>
+          <ul className="h-[400px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
             {tokenList.map((token) => (
-              <li key={token}>
+              <li key={token.symbol}>
                 <button
                   className={
                     "relative h-11 w-full flex justify-start items-center ps-14 " +
-                    (selectedToken === token ? " bg-[#1B192D]" : "")
+                    (selectedToken === token.symbol ? " bg-[#1B192D]" : "")
                   }
                 >
-                  <span>{token}</span>
-                  {selectedToken === token && (
+                  <span>{token.symbol}</span>
+                  {selectedToken === token.symbol && (
                     <Image
                       src="/tick.svg"
                       alt="Selected token"
