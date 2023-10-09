@@ -15,6 +15,11 @@ export default function Home() {
   const [currentPrice, setCurrentPrice] = React.useState(0);
   const [selectedToken, setSelectedToken] = React.useState<string | null>(null);
 
+  const [investedAmount, setInvestedAmount] = React.useState("");
+  const estimatedTokens = (+investedAmount / +usdToInr(currentPrice)).toFixed(
+    2
+  );
+
   React.useEffect(() => {
     getTokenList().then((tokens) => {
       setTokenList(tokens);
@@ -117,9 +122,11 @@ export default function Home() {
 
           <div className="relative">
             <input
-              type="text"
+              type="number"
               className="bg-inherit border-[#6E56F8] border-opacity-25 border-[1px] w-full h-14 rounded-md flex justify-between items-center px-6 py-4 placeholder:text-xl placeholder:font-semibold placeholder:text-[#6F6F7E]"
               placeholder="0.00"
+              value={investedAmount}
+              onChange={(e) => setInvestedAmount(e.target.value)}
             />
 
             <div className="absolute right-6 top-1 translate-y-1/2 select-none">
@@ -131,16 +138,17 @@ export default function Home() {
         <div className="flex flex-col gap-2">
           <div className="flex justify-between">
             <div className="text-[#C5C5C5] text-sm">
-              Estimate Number of ETH You will Get
+              Estimate Number of {selectedToken} You will Get
             </div>
           </div>
 
           <div>
             <input
-              type="text"
+              type="number"
               disabled
               className="bg-[#1C1731] w-full h-14 rounded-md flex justify-between items-center px-6 py-4 placeholder:text-xl placeholder:font-semibold placeholder:text-[#6F6F7E]"
               placeholder="0.00"
+              value={estimatedTokens}
             />
           </div>
         </div>
