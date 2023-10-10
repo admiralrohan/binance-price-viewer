@@ -1,11 +1,14 @@
+export interface IToken {
+  symbol: string;
+  logoUrl: string;
+}
+
 /** For the time being considering 1 USD = 80 INR As a constant */
 export function usdToInr(usdValue: number) {
   return Number(usdValue * 80).toFixed(2);
 }
 
-export async function getTokenList(): Promise<
-  Array<{ symbol: string; logoUrl: string }>
-> {
+export async function getTokenList(): Promise<IToken[]> {
   try {
     const response = await fetch("https://api.binance.com/api/v3/exchangeInfo");
     if (!response.ok) {

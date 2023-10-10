@@ -4,14 +4,12 @@ import React from "react";
 import Button from "@/components/Button";
 import Image from "next/image";
 import SelectToken from "@/app/SelectToken";
-import { getTokenList, usdToInr } from "@/app/utils";
+import { IToken, getTokenList, usdToInr } from "@/app/utils";
 
 const ws = new WebSocket("wss://stream.binance.com:9443/ws");
 
 export default function Home() {
-  const [tokenList, setTokenList] = React.useState<
-    Array<{ symbol: string; logoUrl: string }>
-  >([]);
+  const [tokenList, setTokenList] = React.useState<IToken[]>([]);
   const [currentPrice, setCurrentPrice] = React.useState(0);
   const [selectedToken, setSelectedToken] = React.useState<string | null>(null);
 

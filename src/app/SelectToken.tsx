@@ -1,10 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import Modal from "@/components/Modal";
+import { IToken } from "@/app/utils";
 
 interface SelectTokenProps {
   children: React.ReactNode;
-  tokenList: Array<{ symbol: string; logoUrl: string }>;
+  tokenList: IToken[];
   selectedToken: string | null;
   setSelectedToken: React.Dispatch<React.SetStateAction<string | null>>;
 }
@@ -16,6 +17,11 @@ export default function SelectToken({
   setSelectedToken,
 }: SelectTokenProps) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const filteredTokens = tokenList.filter((token) =>
+    token.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} trigger={children}>
@@ -41,11 +47,13 @@ export default function SelectToken({
               type="text"
               placeholder="Search Chains"
               className="rounded-4xl w-full h-10 ps-10 bg-[#0B0819] border-[1px] border-[#6E56F040]"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
           <ul className="h-[400px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-            {tokenList.map((token) => (
+            {filteredTokens.map((token) => (
               <li key={token.symbol}>
                 <button
                   className={
