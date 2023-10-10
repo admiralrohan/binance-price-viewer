@@ -52,7 +52,7 @@ export default function SelectToken({
             />
           </div>
 
-          <ul className="h-[400px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+          <ul className="h-[200px] lg:h-[400px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
             {filteredTokens.map((token) => (
               <li key={token.symbol}>
                 <button

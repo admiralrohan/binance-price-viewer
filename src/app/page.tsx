@@ -31,7 +31,7 @@ export default function Home() {
   });
 
   return (
-    <main className="text-white">
+    <main className="text-white px-4">
       <div className="w-fit mt-12 mx-auto mb-4 border-[#1C1731] border-[10px] rounded-full">
         {selectedToken && (
           <Image
@@ -43,7 +43,7 @@ export default function Home() {
         )}
       </div>
 
-      <div className="w-[470px] mx-auto mb-24 px-10 py-12 border-current border-2 flex flex-col gap-6">
+      <div className="sm:w-[470px] mx-auto mb-24 px-10 py-12 border-current border-2 flex flex-col gap-6">
         <div className="flex flex-col gap-2">
           <div className="flex justify-between">
             <div className="text-[#C5C5C5] text-sm">Current value</div>
