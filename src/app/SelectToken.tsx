@@ -67,7 +67,7 @@ export default function SelectToken({
                 >
                   <Image
                     src={token.logoUrl}
-                    alt={selectedToken || "Token logo"}
+                    alt={token.symbol + "'s logo"}
                     width={24}
                     height={24}
                   />

@@ -34,7 +34,7 @@ export default function Header() {
       </ul>
 
       <div className="lg:flex-1 flex justify-end order-2 w-1/2 lg:w-auto">
-        <Button className="-lg:translate-x-24">Connect wallet</Button>
+        <Button className="lg:-translate-x-24">Connect wallet</Button>
       </div>
     </header>
   );
