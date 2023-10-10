@@ -12,7 +12,10 @@ const ws = new WebSocket("wss://stream.binance.com:9443/ws");
 export default function Home() {
   const [tokenList, setTokenList] = React.useState<IToken[]>([]);
   const [currentPrice, setCurrentPrice] = React.useState(0);
+
   const [selectedToken, setSelectedToken] = React.useState<string | null>(null);
+  const selectedTokenLogo =
+    tokenList.find((token) => token.symbol === selectedToken)?.logoUrl || "";
 
   const [investedAmount, setInvestedAmount] = React.useState("");
   const estimatedTokens = (+investedAmount / +usdToInr(currentPrice)).toFixed(
@@ -29,7 +32,18 @@ export default function Home() {
 
   return (
     <main className="text-white">
-      <div className="w-[470px] mx-auto my-24 px-10 py-12 border-current border-2 flex flex-col gap-6">
+      <div className="w-fit mt-12 mx-auto mb-4 border-[#1C1731] border-[10px] rounded-full">
+        {selectedToken && (
+          <Image
+            src={selectedTokenLogo}
+            alt={selectedToken || "Token logo"}
+            width={50}
+            height={50}
+          />
+        )}
+      </div>
+
+      <div className="w-[470px] mx-auto mb-24 px-10 py-12 border-current border-2 flex flex-col gap-6">
         <div className="flex flex-col gap-2">
           <div className="flex justify-between">
             <div className="text-[#C5C5C5] text-sm">Current value</div>
@@ -58,9 +72,23 @@ export default function Home() {
             selectedToken={selectedToken}
             setSelectedToken={setSelectedToken}
           >
-            <button className="bg-[#1C1731] w-full h-14 rounded-md flex justify-between items-center px-6 py-4">
-              <span>{selectedToken}</span>
-              <Image src="/arrow-down.svg" alt="ETH" width={14} height={7} />
+            <button className="bg-[#1C1731] w-full h-14 rounded-md flex justify-start items-center px-6 py-4">
+              {selectedToken && (
+                <Image
+                  src={selectedTokenLogo}
+                  alt={selectedToken || "Token logo"}
+                  width={25}
+                  height={25}
+                />
+              )}
+              <span className="ms-2 me-auto">{selectedToken}</span>
+
+              <Image
+                src="/arrow-down.svg"
+                alt="Arrow down"
+                width={14}
+                height={7}
+              />
             </button>
           </SelectToken>
         </div>

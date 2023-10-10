@@ -57,7 +57,7 @@ export default function SelectToken({
               <li key={token.symbol}>
                 <button
                   className={
-                    "relative h-11 w-full flex justify-start items-center ps-14 " +
+                    "relative h-11 w-full flex justify-start gap-4 items-center ps-4 " +
                     (selectedToken === token.symbol ? " bg-[#1B192D]" : "")
                   }
                   onClick={() => {
@@ -65,7 +65,14 @@ export default function SelectToken({
                     setIsModalOpen(false);
                   }}
                 >
+                  <Image
+                    src={token.logoUrl}
+                    alt={selectedToken || "Token logo"}
+                    width={24}
+                    height={24}
+                  />
                   <span>{token.symbol}</span>
+
                   {selectedToken === token.symbol && (
                     <Image
                       src="/tick.svg"
